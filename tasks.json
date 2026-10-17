@@ -1,0 +1,7 @@
+{
+  "tasks": [
+    {"id":"excel-1","name":"Excel project 1","status":"waiting_for_integration","note":"Connect a supported, authorized workflow for the existing project."},
+    {"id":"excel-2","name":"Excel project 2","status":"waiting_for_integration","note":"Connect a supported, authorized workflow for the existing project."},
+    {"id":"ebook","name":"eBook project","status":"waiting_for_integration","note":"Connect a supported, authorized workflow for the existing project."}
+  ]
+}
