@@ -1,7 +1,38 @@
 {
+  "version": 1,
+  "policy": {
+    "budget_extra_php": 0,
+    "ai_api_calls_enabled": false,
+    "approval_required_for_consequential_changes": true,
+    "private_handoffs_in_public_repo": false
+  },
   "tasks": [
-    {"id":"excel-1","name":"Excel project 1","status":"waiting_for_integration","note":"Connect a supported, authorized workflow for the existing project."},
-    {"id":"excel-2","name":"Excel project 2","status":"waiting_for_integration","note":"Connect a supported, authorized workflow for the existing project."},
-    {"id":"ebook","name":"eBook project","status":"waiting_for_integration","note":"Connect a supported, authorized workflow for the existing project."}
+    {
+      "id": "excel-1",
+      "name": "Excel project 1",
+      "priority": "normal",
+      "status": "waiting_for_integration",
+      "approval_state": "not_requested",
+      "note": "Await a private handoff and authorized workbook files before implementing project-specific automation.",
+      "next_action": "Capture handoff from the original Claude conversation when available."
+    },
+    {
+      "id": "excel-2",
+      "name": "Excel project 2",
+      "priority": "normal",
+      "status": "waiting_for_integration",
+      "approval_state": "not_requested",
+      "note": "Await a private handoff and authorized workbook files before implementing project-specific automation.",
+      "next_action": "Capture handoff from the original Claude conversation when available."
+    },
+    {
+      "id": "ebook",
+      "name": "eBook project",
+      "priority": "normal",
+      "status": "waiting_for_integration",
+      "approval_state": "not_requested",
+      "note": "Await a private handoff and authorized eBook files before implementing project-specific automation.",
+      "next_action": "Capture handoff from the original Claude conversation when available."
+    }
   ]
 }
