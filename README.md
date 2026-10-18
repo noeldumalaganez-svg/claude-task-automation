@@ -58,4 +58,9 @@ This is a **public** repository. Do not commit private spreadsheet/eBook content
 
 ## Current status
 
-The system can track tasks and report status, and the Telegram control workflow can record decisions. It does not yet modify Excel files, write the eBook, or continue Claude.ai chats. Any future worker must be built and tested separately against authorized project files.
+The system can track tasks and report status, and the Telegram control workflow can record decisions. A reusable, read-only eBook QA/DOCX draft workflow is now available in `.github/workflows/ebook-worker-reusable.yml`, with its helper in `ebook_worker.py`. It must be called by a private manuscript repository; this public repository does not contain the manuscript and does not run the private build itself. The worker checks section count, summarizes scanner flags without printing manuscript excerpts, and creates a draft artifact plus metadata-only report. It does not edit the master, upload to Drive, perform a literary or historical review, or continue Claude.ai chats.
+
+
+## Important Actions billing clarification
+
+Public repositories can use standard GitHub-hosted runners without consuming the included Actions minutes, subject to GitHub's other limits and policies. However, when a private repository calls this reusable workflow, the Actions minutes are charged to the **private caller repository**. Reusing public workflow code does not make the private build unlimited. Keep the eBook workflow manual or low-frequency, monitor the included allowance, and do not enable paid overages if the budget must remain PHP 0.
