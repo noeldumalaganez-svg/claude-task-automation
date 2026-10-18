@@ -1,0 +1,55 @@
+name: Reusable private eBook QA build
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ebook-qa-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  qa-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out private manuscript repository
+        uses: actions/checkout@v4
+        with:
+          path: manuscript
+      - name: Check out public worker code
+        uses: actions/checkout@v4
+        with:
+          repository: noeldumalaganez-svg/claude-task-automation
+          ref: main
+          path: worker
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install DOCX build dependency
+        working-directory: manuscript
+        run: npm install --no-save docx@^9
+      - name: Test worker summary logic
+        working-directory: worker
+        run: python -m unittest test_ebook_worker.py
+      - name: Validate, scan, and build draft
+        env:
+          EBOOK_SOURCE_DIR: ${{ github.workspace }}/manuscript
+          EBOOK_OUTPUT_DIR: ${{ github.workspace }}/manuscript/worker-output
+        run: python worker/ebook_worker.py
+      - name: Upload private draft artifact and QA report
+        uses: actions/upload-artifact@v4
+        with:
+          name: rook-and-wolf-qa-draft
+          path: |
+            manuscript/worker-output/The Rook and the Wolf - QA draft.docx
+            manuscript/worker-output/qa-report.json
+          if-no-files-found: error
+          retention-days: 7
