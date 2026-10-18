@@ -34,7 +34,7 @@ jobs:
         with:
           node-version: "22"
       - name: Install DOCX build dependency
-        working-directory: manuscript
+        working-directory: worker
         run: npm install --no-save docx@^9
       - name: Test worker summary logic
         working-directory: worker
@@ -43,6 +43,7 @@ jobs:
         env:
           EBOOK_SOURCE_DIR: ${{ github.workspace }}/manuscript
           EBOOK_OUTPUT_DIR: ${{ github.workspace }}/manuscript/worker-output
+          NODE_PATH: ${{ github.workspace }}/worker/node_modules
         run: python worker/ebook_worker.py
       - name: Upload private draft artifact and QA report
         uses: actions/upload-artifact@v4
