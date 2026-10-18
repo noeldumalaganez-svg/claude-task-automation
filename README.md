@@ -1,48 +1,61 @@
 # Claude Task Automation Starter
 
-This repository is a **scheduler and Telegram notification starter** for tracking three workstreams:
+This public repository tracks three workstreams:
 - Excel project 1
 - Excel project 2
 - eBook project
 
-## Important limitation
+## Important limitations
 
-GitHub Actions cannot automatically continue work inside existing Claude.ai conversations just because this repository exists. This starter does **not** log in to Claude.ai, read your conversations, or send "continue" messages. It avoids storing Claude passwords, browser cookies, or session tokens in GitHub.
+GitHub Actions cannot automatically continue work inside existing Claude.ai conversations just because this repository exists. This system does **not** log in to Claude.ai, read your conversations, or send "continue" messages. It avoids storing Claude passwords, browser cookies, or session tokens in GitHub.
 
-Anthropic API usage is separate from a Claude.ai subscription and may cost money. The current free-tier plan keeps AI calls disabled and does not attempt to bypass Claude usage limits.
+Anthropic API usage is separate from a Claude.ai subscription and may cost money. AI calls remain disabled; this repository does not bypass Claude usage limits.
 
-## What this starter does
+## What is implemented
 
-- Runs on a schedule and when manually triggered.
-- Reads the public task queue file.
-- Sends Telegram status messages when Telegram secrets are configured.
-- Includes a generic handoff template to preserve context from the original chats.
-- Documents a free-tier workflow and safety rules.
-- Keeps project data and credentials out of this public repository.
+- Existing scheduled Telegram status reports remain in `.github/workflows/scheduler.yml`.
+- `tasks.json` is the shared queue for all three projects, with status, next action, and approval state.
+- `telegram_control.py` handles read-only status commands and records approval/rejection decisions for tasks explicitly marked `pending_approval`.
+- `.github/workflows/telegram-control.yml` checks Telegram commands about every five minutes and can also be run manually.
+- Unit tests cover command handling and approval safety.
+- `HANDOFF_TEMPLATE.md` helps preserve context from the original Claude conversations.
+- `FREE_TIER_WORKFLOW.md` describes the no-extra-cost approach.
+
+**Approval is a record only.** `/approve` does not run code, modify a workbook, publish the eBook, or perform any other project action. A real task worker has not been implemented yet.
+
+## Telegram commands
+
+Send these commands to the configured bot from the chat matching `TELEGRAM_CHAT_ID`:
+
+- `/help` — list commands and safety rules.
+- `/status` — show status for all three projects.
+- `/tasks` — show task IDs, statuses, and approval states.
+- `/approve <task-id>` — record approval only if that task is already marked `pending_approval`.
+- `/reject <task-id>` — record rejection only if that task is already marked `pending_approval`.
+
+Commands are checked on a best-effort five-minute schedule, so replies are not instant. Do not configure a Telegram webhook for this bot while using the polling workflow; Telegram polling and webhooks are mutually exclusive. The workflow needs repository Contents write permission only to save approval decisions to `tasks.json`.
+
+To create an approval request, edit the relevant task in `tasks.json` and set `approval_state` to `pending_approval`, with a clear description of the proposed action. Do not include private project data or secrets in that description.
 
 ## Preserve your existing Claude work
 
 1. Open `HANDOFF_TEMPLATE.md`.
-2. When a project’s original Claude conversation is available again, ask Claude to fill out the template with actual project progress.
+2. When the original Claude conversation is available again, ask Claude to fill out the template with actual project progress.
 3. Save each completed handoff in private storage (not in this public repository).
 4. Keep private project files and workbooks in private storage as well.
 
-See `FREE_TIER_WORKFLOW.md` for the planned rollout and limitations.
-
-## Setup
+## Setup and checks
 
 1. In GitHub, open **Settings → Secrets and variables → Actions**.
-2. Add repository secrets:
-   - `TELEGRAM_BOT_TOKEN`: your Telegram bot token.
-   - `TELEGRAM_CHAT_ID`: your Telegram chat ID.
-3. Never put either secret in a committed file, issue, or chat message.
-4. Open **Actions → Scheduled task status → Run workflow** to test manually.
-5. The scheduled run is best-effort; GitHub may delay cron runs.
+2. Confirm repository secrets `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` are configured. Never put them in committed files, issues, or chat messages.
+3. Under **Actions**, confirm workflows are enabled and that the workflow token is allowed to write repository contents.
+4. Run **Actions → Telegram task controls → Run workflow** to test the command poller; run **Scheduled task status** to test the existing status report.
+5. Check the workflow run logs if a command does not receive a reply. GitHub scheduled runs are best-effort and may be delayed.
 
-## Edit the task queue
+## Privacy and safety
 
-Edit `tasks.json` to change project labels and notes. Do not put private spreadsheet or eBook contents in this public repository.
+This is a **public** repository. Do not commit private spreadsheet/eBook contents, handoffs, credentials, personal data, or client information. Keep AI calls disabled to preserve the ₱0 extra budget. Future workers must use explicitly authorized private inputs, bounded tasks, draft outputs, and approval gates for consequential changes.
 
 ## Current status
 
-The current Python runner is **status-only**. It does not modify Excel files, write the eBook, or continue Claude.ai chats. Any future worker must have explicitly authorized private inputs, bounded tasks, safe draft outputs, and approval gates for consequential changes.
+The system can track tasks and report status, and the Telegram control workflow can record decisions. It does not yet modify Excel files, write the eBook, or continue Claude.ai chats. Any future worker must be built and tested separately against authorized project files.
