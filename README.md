@@ -9,14 +9,25 @@ This repository is a **scheduler and Telegram notification starter** for trackin
 
 GitHub Actions cannot automatically continue work inside existing Claude.ai conversations just because this repository exists. This starter does **not** log in to Claude.ai, read your conversations, or send "continue" messages. It avoids storing Claude passwords, browser cookies, or session tokens in GitHub.
 
-To automate actual generation, a supported API integration or a separately designed local browser workflow would be needed. Anthropic API usage is separate from a Claude.ai subscription and may cost money. Do not try to bypass Claude usage limits.
+Anthropic API usage is separate from a Claude.ai subscription and may cost money. The current free-tier plan keeps AI calls disabled and does not attempt to bypass Claude usage limits.
 
 ## What this starter does
 
 - Runs on a schedule and when manually triggered.
-- Checks the public task queue file.
-- Sends a Telegram status message when Telegram secrets are configured.
+- Reads the public task queue file.
+- Sends Telegram status messages when Telegram secrets are configured.
+- Includes a generic handoff template to preserve context from the original chats.
+- Documents a free-tier workflow and safety rules.
 - Keeps project data and credentials out of this public repository.
+
+## Preserve your existing Claude work
+
+1. Open `HANDOFF_TEMPLATE.md`.
+2. When a project’s original Claude conversation is available again, ask Claude to fill out the template with actual project progress.
+3. Save each completed handoff in private storage (not in this public repository).
+4. Keep private project files and workbooks in private storage as well.
+
+See `FREE_TIER_WORKFLOW.md` for the planned rollout and limitations.
 
 ## Setup
 
@@ -34,4 +45,4 @@ Edit `tasks.json` to change project labels and notes. Do not put private spreads
 
 ## Current status
 
-This is a safe foundation for scheduling and status notifications, **not yet an AI worker**. It does not modify your Excel files or write the eBook automatically.
+The current Python runner is **status-only**. It does not modify Excel files, write the eBook, or continue Claude.ai chats. Any future worker must have explicitly authorized private inputs, bounded tasks, safe draft outputs, and approval gates for consequential changes.
