@@ -29,10 +29,10 @@
       "id": "ebook",
       "name": "eBook project",
       "priority": "normal",
-      "status": "waiting_for_integration",
+      "status": "qa_build_working_delivery_test_pending",
       "approval_state": "not_requested",
-      "note": "Await a private handoff and authorized eBook files before implementing project-specific automation.",
-      "next_action": "Capture handoff from the original Claude conversation when available."
+      "note": "Private manuscript worker is integrated enough to validate 35 sections, scan repetition/tics, and build a QA DOCX (last confirmed successful on 2026-10-19). Telegram DOCX delivery has been added to the private workflow but still needs a run with private repository secrets configured. Source remains read-only; no AI rewriting or master replacement.",
+      "next_action": "Verify TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID exist in the private repository Actions secrets, then confirm a workflow run delivers the DOCX to Telegram. Keep manuscript content private."
     }
   ]
 }
