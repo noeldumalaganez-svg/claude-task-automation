@@ -29,10 +29,10 @@
       "id": "ebook",
       "name": "eBook project",
       "priority": "normal",
-      "status": "qa_build_working_delivery_test_pending",
+      "status": "chapter_qa_diagnostics_added_delivery_confirmed",
       "approval_state": "not_requested",
-      "note": "Private manuscript worker is integrated enough to validate 35 sections, scan repetition/tics, and build a QA DOCX (last confirmed successful on 2026-10-19). Telegram DOCX delivery has been added to the private workflow but still needs a run with private repository secrets configured. Source remains read-only; no AI rewriting or master replacement.",
-      "next_action": "Verify TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID exist in the private repository Actions secrets, then confirm a workflow run delivers the DOCX to Telegram. Keep manuscript content private."
+      "note": "Private worker previously validated 35 sections, ran the repetition/tic scan, built a QA DOCX, and delivered it to Telegram (user confirmed receipt). Added chapter-by-chapter word/paragraph metrics, 250+ word paragraph review candidates, and exact repeated-paragraph detection; these are deterministic review prompts, not prose judgments. Latest code changes still need a successful Actions run to verify.",
+      "next_action": "Check the next private worker Actions run for the new chapter diagnostics in reports/latest-run.md. Keep source read-only; no AI rewriting or master replacement."
     }
   ]
 }
